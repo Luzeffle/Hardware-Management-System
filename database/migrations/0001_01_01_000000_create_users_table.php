@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone')->unique();
-            $table->enum('role', ['admin', 'staff', 'manager']);
-            // $table->string('password'); // Removed password column
-            $table->tinyInteger('pin');
+            $table->Integer('pin');
             # $table->unsignedBigInteger('branch_id')->nullable();
             # $table->foreign('branch_id')->references('id')->on('branches')->onDelete('set null');
             $table->timestamps();
