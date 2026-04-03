@@ -44,7 +44,26 @@
                 <div class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
                     @isset($header)
                         <header class="mb-5 border-b border-slate-200 pb-4">
-                            {{ $header }}
+                            <div class="flex items-center justify-between gap-6">
+                                <div class="flex-shrink">
+                                    {{ $header }}
+                                </div>
+                                <div class="text-right">
+                                    @php
+                                        $user = auth()->user();
+                                        $role = null;
+                                        if ($user) {
+                                            $role = $user->role ?? ($user->getRoleNames()->first() ?? null);
+                                        }
+                                    @endphp
+                                    @if($user)
+                                        <div class="font-medium">{{ $user->name }}</div>
+                                        @if($role)
+                                            <div class="text-xs text-slate-500">{{ $role }}</div>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
                         </header>
                     @endisset
 
