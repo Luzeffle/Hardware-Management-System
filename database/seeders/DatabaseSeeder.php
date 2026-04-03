@@ -18,43 +18,43 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // create permission for spatie
+        // create permission for spatie (dot-separated resource.action format)
         $permissions = [
             // Dashboard
-            'view dashboard',
+            'dashboard.view',
 
             // POS / Sales
-            // debatable, might just make this into one.
-            'create sale',
-            'view sales history',
-            'refund sale',
-            'print receipt',
+            'pos.access',
+            'sales.create',
+            'sales.view-history',
+            'sales.refund',
+            'sales.print-receipt',
 
             // Inventory
-            'view stock overview',
-            'update stock',
-            'view stock movements',
-            'archive stock',
-            'delete stock',
+            'inventory.view-overview',
+            'inventory.update',
+            'inventory.view-movements',
+            'inventory.archive',
+            'inventory.delete',
 
             // Audit Logs
-            'view user activity logs',
-            'view system logs',
+            'audit.user-activity.view',
+            'audit.system-logs.view',
 
             // Reports
-            'view reports',
+            'reports.view',
 
             // Users
-            'create user',
-            'edit user',
-            'delete user',
-            'view user list',
+            'users.create',
+            'users.edit',
+            'users.delete',
+            'users.view-list',
 
             // Suppliers
-            'create supplier',
-            'edit supplier',
-            'delete supplier',
-            'view suppliers',
+            'suppliers.create',
+            'suppliers.edit',
+            'suppliers.delete',
+            'suppliers.view',
         ];
 
         foreach ($permissions as $permission) {
@@ -71,30 +71,32 @@ class DatabaseSeeder extends Seeder
 
         // Manager: mostly sales, inventory, reports, users
         $managerRole->syncPermissions([
-            'view dashboard',
-            'create sale',
-            'view sales history',
-            'refund sale',
-            'view stock overview',
-            'update stock',
-            'view stock movements',
-            'archive stock',
-            'view reports',
-            'view user activity logs',
-            'view system logs',
-            'create user',
-            'edit user',
-            'view user list',
-            'create supplier',
-            'edit supplier',
-            'view suppliers',
+            'dashboard.view',
+            'pos.access',
+            'sales.create',
+            'sales.view-history',
+            'sales.refund',
+            'inventory.view-overview',
+            'inventory.update',
+            'inventory.view-movements',
+            'inventory.archive',
+            'reports.view',
+            'audit.user-activity.view',
+            'audit.system-logs.view',
+            'users.create',
+            'users.edit',
+            'users.view-list',
+            'suppliers.create',
+            'suppliers.edit',
+            'suppliers.view',
         ]);
 
         // Cashier: sales only
         $cashierRole->syncPermissions([
-            'create sale',
-            'view sales history',
-            'print receipt',
+            'pos.access',
+            'sales.create',
+            'sales.view-history',
+            'sales.print-receipt',
         ]);
 
 
@@ -114,7 +116,7 @@ class DatabaseSeeder extends Seeder
                 'name'=> 'Cashier',
                 'pin' => '1234'
             ]
-        )
+        );
         // Default manager user
         $manager = User::firstOrCreate(
             ['phone'=>'09108712969'],
@@ -122,7 +124,7 @@ class DatabaseSeeder extends Seeder
                 'name'=> 'Manager',
                 'pin' => '1234'
             ]
-        )
+        );
         $admin->assignRole('admin');
         $cashier->assignRole('cashier');
         $manager->assignRole('manager');
