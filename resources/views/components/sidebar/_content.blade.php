@@ -37,99 +37,77 @@
         </x-sidebar.link>
 
         @can('pos.access')
-            <x-sidebar.link
-                href="{{ route('pos') }}"
-                :active="request()->routeIs('pos')"
-                @click="mobileOpen = false"
-            >
-                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 8.25h16.5M3.75 12h16.5M8.25 15.75h7.5" />
-                </svg>
-                <span>POS</span>
-            </x-sidebar.link>
-        @endcan
-
-        <x-sidebar.link href="#">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 8.25h16.5M3.75 12h16.5M8.25 15.75h7.5" />
-            </svg>
-            <span>Sales</span>
-        </x-sidebar.link>
-
-        <x-sidebar.dropdown label="Inventory">
+        <x-sidebar.dropdown label="POS">
             <x-slot:icon>
+                {{-- POS: card/terminal icon --}}
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3.75h10.5A2.25 2.25 0 0119.5 6v12a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18V6a2.25 2.25 0 012.25-2.25z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h7.5m-7.5 3h7.5m-7.5 3h4.5" />
+                    <rect x="4.5" y="5.25" width="15" height="13.5" rx="2.25" ry="2.25" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 9h9m-9 4.5h3.75" />
                 </svg>
             </x-slot:icon>
 
-            <a
-                href="#"
-                class="block rounded-lg bg-indigo-500 px-3 py-2 text-sm text-white hover:bg-indigo-500/90"
-            >
+            <x-sidebar.item href="{{ route('pos') }}" variant="primary">
+                New Sale
+            </x-sidebar.item>
+            <x-sidebar.item href="#">
+                Transaction History
+            </x-sidebar.item>
+        </x-sidebar.dropdown>
+        @endcan
+
+        <x-sidebar.dropdown label="Inventory">
+            <x-slot:icon>
+                {{-- Inventory: box icon --}}
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-4.5-9 4.5 9 4.5 9-4.5z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5v9l9 4.5 9-4.5v-9" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 12v9" />
+                </svg>
+            </x-slot:icon>
+
+            <x-sidebar.item href="#">
                 Stock Overview
-            </a>
-            <a
-                href="#"
-                class="block rounded-lg bg-indigo-500 px-3 py-2 text-sm text-white hover:bg-indigo-500/90"
-            >
+            </x-sidebar.item>
+            <x-sidebar.item href="#">
                 Stock In
-            </a>
-            <a
-                href="#"
-                class="block rounded-lg bg-indigo-500 px-3 py-2 text-sm text-white hover:bg-indigo-500/90"
-            >
+            </x-sidebar.item>
+            <x-sidebar.item href="#">
                 Stock Out
-            </a>
-            <a
-                href="#"
-                class="block rounded-lg px-3 py-2 text-sm text-indigo-100 hover:bg-white/10"
-            >
+            </x-sidebar.item>
+            <x-sidebar.item href="#">
                 Stock Movements
-            </a>
-            <a
-                href="#"
-                class="block rounded-lg px-3 py-2 text-sm text-indigo-100 hover:bg-white/10"
-            >
+            </x-sidebar.item>
+            <x-sidebar.item href="#">
                 Archives
-            </a>
+            </x-sidebar.item>
         </x-sidebar.dropdown>
 
         <x-sidebar.dropdown label="Audit Logs">
             <x-slot:icon>
+                {{-- Audit Logs: document with check icon --}}
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3.75h10.5A2.25 2.25 0 0119.5 6v12a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18V6a2.25 2.25 0 012.25-2.25z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h7.5m-7.5 3h7.5m-7.5 3h4.5" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 3.75h6.75L21 9v9.75A2.25 2.25 0 0118.75 21H9A2.25 2.25 0 016.75 18.75V6A2.25 2.25 0 019 3.75z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 12.75l2.25 2.25 3.75-3.75" />
                 </svg>
             </x-slot:icon>
 
-            <a
-                href="#"
-                class="block rounded-lg bg-indigo-500 px-3 py-2 text-sm text-white hover:bg-indigo-500/90"
-            >
+            <x-sidebar.item href="#" variant="primary">
                 User Activity
-            </a>
-            <a
-                href="#"
-                class="block rounded-lg px-3 py-2 text-sm text-indigo-100 hover:bg-white/10"
-            >
+            </x-sidebar.item>
+            <x-sidebar.item href="#">
                 System Logs
-            </a>
-            <a
-                href="#"
-                class="block rounded-lg px-3 py-2 text-sm text-indigo-100 hover:bg-white/10"
-            >
+            </x-sidebar.item>
+            <x-sidebar.item href="#">
                 Archives
-            </a>
+            </x-sidebar.item>
         </x-sidebar.dropdown>
 
-        <a href="#" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-indigo-100 transition hover:bg-white/10">
+        <x-sidebar.item href="#" class="flex items-center gap-3">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12.75h16.5M7.5 8.25h9m-9 9h9M4.5 5.25h15A1.5 1.5 0 0121 6.75v10.5a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 17.25V6.75a1.5 1.5 0 011.5-1.5z" />
             </svg>
-            Supplier Records
-        </a>
+            <span>Supplier Records</span>
+        </x-sidebar.item>
 
         <x-sidebar.link
             href="{{ route('profile.edit') }}"
