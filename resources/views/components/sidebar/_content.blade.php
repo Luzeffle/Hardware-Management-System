@@ -2,8 +2,8 @@
     Shared sidebar markup used by the main container component.
 --}}
 <aside
-        :class="mobileOpen ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col bg-[#050938] px-4 py-6 text-slate-100 transition-transform duration-200 ease-out lg:sticky lg:top-0 lg:h-screen lg:translate-x-0"
+    :class="mobileOpen ? 'translate-x-0' : '-translate-x-full'"
+    class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col overflow-y-auto bg-[#050938] px-4 py-6 text-slate-100 transition-transform duration-200 ease-out lg:sticky lg:top-0 lg:h-screen lg:translate-x-0"
 >
     <div class="mb-8 flex items-center gap-3 px-2">
         <x-application-logo />
@@ -56,10 +56,31 @@
                 New Sale
             </x-sidebar.item>
             <x-sidebar.item href="#">
-                Transaction History
+                Transactions
             </x-sidebar.item>
         </x-sidebar.dropdown>
         @endcan
+
+        <x-sidebar.dropdown
+            label="Purchasing"
+        >
+            <x-slot:icon>
+                {{-- POS: card/terminal icon --}}
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4.5" y="5.25" width="15" height="13.5" rx="2.25" ry="2.25" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 9h9m-9 4.5h3.75" />
+                </svg>
+            </x-slot:icon>
+
+            <x-sidebar.item 
+                href="#"
+            >
+                New Invoice
+            </x-sidebar.item>
+            <x-sidebar.item href="#">
+                Invoice History
+            </x-sidebar.item>
+        </x-sidebar.dropdown>
 
         <x-sidebar.dropdown
             label="Inventory"
@@ -78,7 +99,7 @@
                 Stock Overview
             </x-sidebar.item>
             <x-sidebar.item href="#">
-                Stock In
+                Manual Stock In
             </x-sidebar.item>
             <x-sidebar.item href="#">
                 Stock Out
