@@ -46,7 +46,10 @@
                 </svg>
             </x-slot:icon>
 
-            <x-sidebar.item href="{{ route('pos') }}" variant="primary">
+            <x-sidebar.item 
+                href="{{ route('pos') }}"
+                :active="request()->routeIs('pos')"
+            >
                 New Sale
             </x-sidebar.item>
             <x-sidebar.item href="#">
