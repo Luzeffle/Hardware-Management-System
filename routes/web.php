@@ -32,17 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventory/overview', [\App\Http\Controllers\Inventory\OverviewController::class, 'index'])
         ->middleware('permission:inventory.view-overview')->name('inventory.overview');
 
-    Route::get('/inventory/manual-stock-in', function () {
-        return view('modules.inventory.manual-stock-in');
-    })->middleware('permission:inventory.update')->name('inventory.manual-stock-in');
+    Route::get('/inventory/manual-stock-in', [\App\Http\Controllers\Inventory\StockInController::class, 'create'])
+        ->middleware('permission:inventory.update')->name('inventory.manual-stock-in');
 
-    Route::get('/inventory/stock-out', function () {
-        return view('modules.inventory.stock-out');
-    })->middleware('permission:inventory.update')->name('inventory.stock-out');
+    Route::get('/inventory/stock-out', [\App\Http\Controllers\Inventory\StockOutController::class, 'create'])
+        ->middleware('permission:inventory.update')->name('inventory.stock-out');
 
-    Route::get('/inventory/stock-movements', function () {
-        return view('modules.inventory.stock-movements');
-    })->middleware('permission:inventory.view-movements')->name('inventory.stock-movements');
+    Route::get('/inventory/stock-movements', [\App\Http\Controllers\Inventory\StockMovementController::class, 'index'])
+        ->middleware('permission:inventory.view-movements')->name('inventory.stock-movements');
 
     Route::get('/inventory/archives', function () {
         return view('modules.inventory.archives');
@@ -76,6 +73,13 @@ Route::middleware('auth')->group(function () {
 
         Route::get('checkout/prepare', [\App\Http\Controllers\Pos\CheckoutController::class, 'prepare'])->name('pos.api.checkout.prepare');
         Route::post('checkout/finalize', [\App\Http\Controllers\Pos\CheckoutController::class, 'finalize'])->name('pos.api.checkout.finalize');
+    });
+
+    // Inventory API endpoints
+    Route::prefix('inventory/api')->group(function () {
+        Route::get('products/search', [\App\Http\Controllers\Inventory\StockInController::class, 'searchProducts'])->name('inventory.api.products.search');
+        Route::post('stock-in/store', [\App\Http\Controllers\Inventory\StockInController::class, 'store'])->name('inventory.api.stock-in.store');
+        Route::post('stock-out/store', [\App\Http\Controllers\Inventory\StockOutController::class, 'store'])->name('inventory.api.stock-out.store');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

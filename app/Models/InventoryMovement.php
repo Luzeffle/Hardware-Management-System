@@ -12,6 +12,9 @@ class InventoryMovement extends Model
         'quantity_change' => 'float',
         'created_at' => 'datetime',
     ];
+    public $timestamps = false;
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = null;
 
     public function product()
     {
