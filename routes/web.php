@@ -57,9 +57,9 @@ Route::middleware('auth')->group(function () {
         return view('modules.audit-logs.archives');
     })->middleware('permission:audit.system-logs.view')->name('audit-logs.archives');
 
-    Route::get('/suppliers', function () {
-        return view('modules.suppliers.index');
-    })->middleware('permission:suppliers.view')->name('suppliers.index');
+    // Supplier routes
+    Route::resource('suppliers', \App\Http\Controllers\SupplierController::class)
+        ->middleware('permission:suppliers.view');
 
     // POS API endpoints
     Route::prefix('pos/api')->group(function () {
