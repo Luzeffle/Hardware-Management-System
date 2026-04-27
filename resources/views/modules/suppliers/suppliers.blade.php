@@ -185,89 +185,27 @@
 
 
         <!-- Detail Modal (Read-Only View) -->
-        <div
-            x-show="showDetailModal"
-            x-transition
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-            @click.self="closeDetailModal()"
-        >
-            <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-                <div class="mb-4 flex items-center justify-between gap-3">
-                    <h3 class="text-lg font-semibold text-slate-900" x-text="detail.supplier_name"></h3>
-                    <button
-                        type="button"
-                        class="rounded-md px-2 py-1 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
-                        @click="closeDetailModal()"
-                        aria-label="Close modal"
-                    >
-                        &times;
-                    </button>
-                </div>
-
-                <div class="space-y-4">
-                    <!-- Contact Person -->
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">Contact Person</label>
-                        <p class="mt-1 text-sm text-slate-600" x-text="detail.contact_person || '—'"></p>
-                    </div>
-
-                    <!-- Company Address -->
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">Company Address</label>
-                        <p class="mt-1 text-sm text-slate-600" x-text="detail.company_address || '—'"></p>
-                    </div>
-
-                    <!-- Contact Number -->
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">Contact Number</label>
-                        <p class="mt-1 text-sm text-slate-600" x-text="detail.contact_number || '—'"></p>
-                    </div>
-
-                    <!-- Contact Email -->
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">Contact Email</label>
-                        <p class="mt-1 text-sm text-slate-600" x-text="detail.contact_email || '—'"></p>
-                    </div>
-
-                    <!-- Status -->
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700">Status</label>
-                        <div class="mt-1">
-                            <template x-if="detail.status === 'active'">
-                                <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
-                                    Active
-                                </span>
-                            </template>
-                            <template x-if="detail.status === 'inactive'">
-                                <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">
-                                    Inactive
-                                </span>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal Actions -->
-                <div class="mt-6 flex gap-3">
-                    <button
-                        type="button"
-                        @click="closeDetailModal()"
-                        class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                        Close
-                    </button>
-                    @can('suppliers.edit')
-                    <button
-                        type="button"
-                        @click="switchToEdit()"
-                        class="flex-1 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-                    >
-                        Edit
-                    </button>
-                    @endcan
-                </div>
-            </div>
-        </div>
+        <x-modals.detail-modal
+            show="showDetailModal"
+            :data="(object) $detail"
+            title="Supplier Details"
+            :fields="[
+                'supplier_name' => 'Supplier Name',
+                'contact_person' => 'Contact Person',
+                'company_address' => 'Company Address',
+                'contact_number' => 'Contact Number',
+                'contact_email' => 'Contact Email',
+                'status' => 'Status',
+            ]"
+            :actions="[
+                'edit' => [
+                    'label' => 'Edit',
+                    'permission' => 'suppliers.edit',
+                    'method' => 'switchToEdit()',
+                ],
+            ]"
+            onClose="closeDetailModal()"
+        />
 
         <!-- Create/Edit Modal -->
         <div
