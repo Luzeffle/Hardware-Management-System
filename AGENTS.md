@@ -109,7 +109,42 @@ Permissions are seeded in `database/seeders/DatabaseSeeder.php` when running see
 - `<x-table.empty-state>` — Reusable empty table message. Props: `colspan` (int), `message` (string).
 
 **Filter Components** (`resources/views/components/filters/`):
-- `<x-filters.branch-select>` — Admin-only branch dropdown (shows only if `$branches->count() > 1`). Props: `branches` (Collection), `selected` (branch_id), `route`, `params` (array to preserve during filter). Auto-submits on change. **Example**:
+- `<x-filters.dropdown-filter>` — **Generic** reusable filter dropdown for any model/field combination. Props: `items` (Collection), `selected` (value), `route`, `params` (array), `label`, `filterName` (query param name), `valueField` (model field for option value, default 'id'), `displayField` (model field for display text, default 'name'), `minCount` (show dropdown if items >= minCount, default 2), `class` (extra CSS). Auto-submits on change. **Examples**:
+  ```blade
+  {{-- Branch filter --}}
+  <x-filters.dropdown-filter
+      :items="$branches"
+      :selected="$filterBranchId"
+      route="inventory.overview"
+      :params="['search' => $search]"
+      label="Filter by Branch"
+      filterName="branch_id"
+  />
+
+  {{-- Supplier filter --}}
+  <x-filters.dropdown-filter
+      :items="$suppliers"
+      :selected="$filterSupplierId"
+      route="suppliers.index"
+      label="Filter by Supplier"
+      filterName="supplier_id"
+      displayField="supplier_name"
+  />
+
+  {{-- Status filter (show even with 1 item) --}}
+  <x-filters.dropdown-filter
+      :items="$statuses"
+      :selected="$filterStatus"
+      route="purchases.index"
+      label="Filter by Status"
+      filterName="status"
+      valueField="value"
+      displayField="label"
+      :minCount="1"
+  />
+  ```
+
+- `<x-filters.branch-select>` — **Branch-specific** wrapper around `dropdown-filter` (convenience component). Props: `branches` (Collection), `selected` (branch_id), `route`, `params` (array to preserve during filter), `label`. **Example**:
   ```blade
   <x-filters.branch-select 
       :branches="$allBranches"
@@ -289,8 +324,10 @@ Instead of duplicating sort/filter/pagination UI across views, use reusable Blad
 
 Extract a Blade component when the UI pattern appears **2+ times** across different views. Current extractions:
 - **Sortable headers** → Used in `pos.transactions`, `inventory.overview`
-- **Branch filtering** → Used in `inventory.overview` (can reuse for reporting, purchasing, etc.)
+- **Filter dropdowns** → Generic `dropdown-filter` component for branches, suppliers, statuses, etc.
 - **Pagination** → Used in all list views
+- **Edit modal** → Used for suppliers, purchases, and other forms
+- **Product search typeahead** → Used in POS and inventory
 
 ### Extending Table Components
 
@@ -319,7 +356,8 @@ No need to modify controller or add new logic—columns are defined in the view.
 5. **Sale Item Schema Drift**: `Pos\CheckoutController::finalize()` writes `product_name`, `unit`, `unit_price`, and `cost`, but `sales_items` migration/model only include `sale_id`, `product_id`, `quantity`, `markup`, `subtotal`.
 6. **Vite Hot Reload**: Only works in development. Run `npm run dev` to enable CSS/JS changes without rebuilds.
 7. **Sortable Header Params**: When using `<x-table.sortable-header>`, always pass critical query params (e.g., `search`, `branch_id`) in the `:params` prop to preserve them across sort clicks. Otherwise, filters reset when user sorts.
-8. **Branch Filter Visibility**: `<x-filters.branch-select>` checks `$branches->count() > 1` before rendering. If you want it to always show, manually render the select element instead of using the component.
+8. **Filter Dropdown Visibility**: `<x-filters.dropdown-filter>` checks `$items->count() >= $minCount` before rendering (default minCount=2). Control visibility with the `minCount` prop—use `minCount="1"` to always show, even with a single item.
+9. **Filter Field Mapping**: Use `valueField` and `displayField` props on `dropdown-filter` to map model attributes to option values/labels. For nested/non-standard fields, use `data_get()` helper in your controller or model accessor.
 
 ---
 

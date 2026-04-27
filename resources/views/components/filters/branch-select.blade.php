@@ -1,6 +1,7 @@
 {{--
-    Reusable branch filter dropdown component
-    Shows only for admins with multiple branches
+    Branch-specific filter dropdown component
+    Uses generic dropdown-filter component internally
+    Shows only when multiple branches exist
 
     Props:
     - $branches (Collection): Branch collection to display
@@ -18,28 +19,15 @@
     'label' => 'Filter by Branch',
 ])
 
-@if($branches->count() > 1)
-    <form method="GET" action="{{ route($route) }}" class="flex gap-2 sm:w-auto">
-        {{-- Preserve additional parameters as hidden inputs --}}
-        @foreach($params as $key => $value)
-            @if($value !== null && $value !== '')
-                <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
-            @endif
-        @endforeach
-
-        <select
-            name="branch_id"
-            onchange="this.form.submit()"
-            class="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 hover:border-slate-400 transition-colors"
-            aria-label="{{ $label }}"
-        >
-            <option value="">{{ $label }}</option>
-            @foreach($branches as $branch)
-                <option value="{{ $branch->id }}" {{ $selected == $branch->id ? 'selected' : '' }}>
-                    {{ $branch->name }}
-                </option>
-            @endforeach
-        </select>
-    </form>
-@endif
+<x-filters.dropdown-filter
+    :items="$branches"
+    :selected="$selected"
+    :route="$route"
+    :params="$params"
+    :label="$label"
+    filterName="branch_id"
+    valueField="id"
+    displayField="name"
+    :minCount="2"
+/>
 
